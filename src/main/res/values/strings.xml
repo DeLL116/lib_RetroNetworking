@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name" translatable="false">ApiLib</string>
+    <string name="api_base_url" translatable="false">https://jsonplaceholder.typicode.com/</string>
+</resources>
