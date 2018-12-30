@@ -1,7 +1,7 @@
 package com.nochino.retronetworking
 
 import com.google.gson.GsonBuilder
-import retrofit2.Retrofit
+import retrofit2.*
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -13,4 +13,8 @@ class RetroNetWorker(apiBaseUrl: String) {
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .baseUrl(apiBaseUrl)
         .build()
+
+    fun <T> createWebService(clazz: Class<T>): T {
+        return retrofit.create(clazz)
+    }
 }
