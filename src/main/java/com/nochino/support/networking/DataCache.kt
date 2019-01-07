@@ -1,4 +1,4 @@
-package com.nochino.retronetworking
+package com.nochino.support.networking
 
 /**
  * Simple object used to maintain a cache of a data object

@@ -1,4 +1,4 @@
-package com.nochino.retronetworking;
+package com.nochino.networking;
 
 import org.junit.Test;
 

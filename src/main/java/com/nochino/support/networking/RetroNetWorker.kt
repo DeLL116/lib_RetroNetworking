@@ -1,4 +1,4 @@
-package com.nochino.retronetworking
+package com.nochino.support.networking
 
 import com.google.gson.GsonBuilder
 import retrofit2.*
