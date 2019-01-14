@@ -1,4 +1,4 @@
-package com.nochino.networking;
+package com.nochino.support.networking;
 
 import org.junit.Test;
 
