@@ -4,15 +4,17 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion rootProject.ext.configs.compileSdkVersion
+    buildToolsVersion rootProject.ext.configs.buildToolsVersion
+
     defaultConfig {
-        minSdkVersion 24
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.configs.minSdkVersion
+        targetSdkVersion rootProject.ext.configs.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -23,27 +25,30 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    // --> AndroidX (Support)
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+
+    // --> Android Support / UI
+    implementation "androidx.appcompat:appcompat:$libs.appcompatVersion"
+
     // --> Testing
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    testImplementation "junit:junit:$libs.junitVersion"
+    androidTestImplementation "androidx.test:rules:$libs.rulesVersion"
+    androidTestImplementation "androidx.test:runner:$libs.runnerVersion"
+    androidTestImplementation "androidx.test.ext:junit:$libs.junitAndroidVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$libs.espressoCoreVersion"
+
     // --> Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    // --> Other
-    api 'com.squareup.retrofit2:retrofit:2.4.0'
-    api 'com.squareup.retrofit2:converter-gson:2.4.0'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-    api 'com.jakewharton.timber:timber:4.7.1'
-    // -----> [ DAGGER 2 ]
-    implementation 'com.google.dagger:dagger:2.16'
-    implementation 'com.google.dagger:dagger-android:2.16'
-    implementation 'com.google.dagger:dagger-android-support:2.16'
-    // Using Kotlin requires kapt counterparts of "annotationProcessor" instead of "annotationProcessor" implementations
-    kapt 'com.google.dagger:dagger-compiler:2.16'
-    kapt 'com.google.dagger:dagger-android-processor:2.16'
-    // <----- [ DAGGER 2 ]
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$libs.kotlinVersion"
+
+    // --> Square / Jake Wharton
+    implementation "com.jakewharton.timber:timber:$libs.timberVersion"
+    api "com.squareup.retrofit2:retrofit:$libs.retrofit2Version"
+    api "com.squareup.retrofit2:converter-gson:$libs.retrofit2GsonConverterVersion"
+    api "com.squareup.retrofit2:adapter-rxjava2:$libs.retrofit2AdapterRxjavaVersion"
+
+    // --> DAGGER 2
+    implementation "com.google.dagger:dagger:$libs.daggerVersion"
+    implementation "com.google.dagger:dagger-android:$libs.daggerAndroidVersion"
+    implementation "com.google.dagger:dagger-android-support:$libs.daggerAndroidSupportVersion"
+    kapt "com.google.dagger:dagger-android-processor:$libs.daggerAndroidProcessorVersion"
+    kapt "com.google.dagger:dagger-compiler:$libs.daggerCompilerVersion"
 }
