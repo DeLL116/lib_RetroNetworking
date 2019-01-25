@@ -1,16 +1,19 @@
 package com.nochino.support.networking
 
-import com.google.gson.GsonBuilder
-import retrofit2.*
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.CallAdapter
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetroNetWorker(apiBaseUrl: String) {
+class RetroNetWorker(
+    apiBaseUrl: String,
+    callAdapterFactory: CallAdapter.Factory,
+    converterFactory: GsonConverterFactory
+) {
 
     // Build Retrofit object with the provided apiBaseUrl for making API calls
     var retrofit: Retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(converterFactory)
+        .addCallAdapterFactory(callAdapterFactory)
         .baseUrl(apiBaseUrl)
         .build()
 
