@@ -25,20 +25,24 @@ import com.nochino.support.networking.vo.Status.SUCCESS
  *
  * Borrowed from Google Architecture sample project
  * [android-architecture-components](https://github.com/googlesamples/android-architecture-components/blob/88747993139224a4bb6dbe985adf652d557de621/GithubBrowserSample/app/src/main/java/com/android/example/github/vo/Resource.kt)
+ *
+ * Renamed this class from "Resource" to "LoadingResource" because it's a more descriptive
+ * class name than just "Resource"
+ *
  * @param <T>
 </T> */
-data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
+data class LoadingResource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {
-        fun <T> success(data: T?): Resource<T> {
-            return Resource(SUCCESS, data, null)
+        fun <T> success(data: T?): LoadingResource<T> {
+            return LoadingResource(SUCCESS, data, null)
         }
 
-        fun <T> error(msg: String, data: T?): Resource<T> {
-            return Resource(ERROR, data, msg)
+        fun <T> error(msg: String, data: T?): LoadingResource<T> {
+            return LoadingResource(ERROR, data, msg)
         }
 
-        fun <T> loading(data: T?): Resource<T> {
-            return Resource(LOADING, data, null)
+        fun <T> loading(data: T?): LoadingResource<T> {
+            return LoadingResource(LOADING, data, null)
         }
     }
 }

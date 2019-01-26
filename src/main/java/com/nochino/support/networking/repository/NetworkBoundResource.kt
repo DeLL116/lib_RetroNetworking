@@ -9,7 +9,7 @@ import com.nochino.support.networking.api.ApiErrorResponse
 import com.nochino.support.networking.api.ApiResponse
 import com.nochino.support.networking.api.ApiSuccessResponse
 import com.nochino.support.networking.execution.AppExecutors
-import com.nochino.support.networking.vo.Resource
+import com.nochino.support.networking.vo.LoadingResource
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.
@@ -26,10 +26,10 @@ import com.nochino.support.networking.vo.Resource
 abstract class NetworkBoundResource<ResultType, RequestType>
 @MainThread constructor(private val appExecutors: AppExecutors) {
 
-    private val result = MediatorLiveData<Resource<ResultType>>()
+    private val result = MediatorLiveData<LoadingResource<ResultType>>()
 
     init {
-        result.value = Resource.loading(null)
+        result.value = LoadingResource.loading(null)
         @Suppress("LeakingThis")
         val dbSource = loadFromDb()
         result.addSource(dbSource) { data ->
@@ -38,14 +38,14 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                 fetchFromNetwork(dbSource)
             } else {
                 result.addSource(dbSource) { newData ->
-                    setValue(Resource.success(newData))
+                    setValue(LoadingResource.success(newData))
                 }
             }
         }
     }
 
     @MainThread
-    private fun setValue(newValue: Resource<ResultType>) {
+    private fun setValue(newValue: LoadingResource<ResultType>) {
         if (result.value != newValue) {
             result.value = newValue
         }
@@ -55,7 +55,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
         val apiResponse = createCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         result.addSource(dbSource) { newData ->
-            setValue(Resource.loading(newData))
+            setValue(LoadingResource.loading(newData))
         }
         result.addSource(apiResponse) { response ->
             result.removeSource(apiResponse)
@@ -70,7 +70,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                             // otherwise we will get immediately last cached value,
                             // which may not be updated with latest results received from network.
                             result.addSource(loadFromDb()) { newData ->
-                                setValue(Resource.success(newData))
+                                setValue(LoadingResource.success(newData))
                             }
                         }
                     }
@@ -79,14 +79,14 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                     appExecutors.mainThread().execute {
                         // reload from disk whatever we had
                         result.addSource(loadFromDb()) { newData ->
-                            setValue(Resource.success(newData))
+                            setValue(LoadingResource.success(newData))
                         }
                     }
                 }
                 is ApiErrorResponse -> {
                     onFetchFailed()
                     result.addSource(dbSource) { newData ->
-                        setValue(Resource.error(response.errorMessage, newData))
+                        setValue(LoadingResource.error(response.errorMessage, newData))
                     }
                 }
             }
@@ -95,7 +95,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
 
     protected open fun onFetchFailed() {}
 
-    fun asLiveData() = result as LiveData<Resource<ResultType>>
+    fun asLiveData() = result as LiveData<LoadingResource<ResultType>>
 
     @WorkerThread
     protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body

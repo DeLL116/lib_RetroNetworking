@@ -21,7 +21,7 @@ package com.nochino.support.networking.vo
  *
  *
  * These are usually created by the Repository classes where they return
- * `LiveData<Resource<T>>` to pass back the latest data to the UI with its fetch status.
+ * `LiveData<LoadingResource<T>>` to pass back the latest data to the UI with its fetch status.
  *
  * Borrowed from Google Architecture sample project
  * [android-architecture-components](https://github.com/googlesamples/android-architecture-components/blob/88747993139224a4bb6dbe985adf652d557de621/GithubBrowserSample/app/src/main/java/com/android/example/github/vo/Status.kt)
