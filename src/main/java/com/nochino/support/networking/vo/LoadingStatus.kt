@@ -17,16 +17,19 @@
 package com.nochino.support.networking.vo
 
 /**
- * Status of a resource that is provided to the UI.
+ * LoadingStatus of a resource that is provided to the UI.
  *
  *
  * These are usually created by the Repository classes where they return
- * `LiveData<LoadingResource<T>>` to pass back the latest data to the UI with its fetch status.
+ * `LiveData<LoadingResource<T>>` to pass back the latest data to the UI with its fetch loadingStatus.
+ *
+ * Renamed this class from "Status" to "LoadingStatus" because it's a more descriptive
+ * class name than just "Status"
  *
  * Borrowed from Google Architecture sample project
  * [android-architecture-components](https://github.com/googlesamples/android-architecture-components/blob/88747993139224a4bb6dbe985adf652d557de621/GithubBrowserSample/app/src/main/java/com/android/example/github/vo/Status.kt)
  */
-enum class Status {
+enum class LoadingStatus {
     SUCCESS,
     ERROR,
     LOADING

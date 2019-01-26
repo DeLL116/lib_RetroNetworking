@@ -16,9 +16,9 @@
 
 package com.nochino.support.networking.vo
 
-import com.nochino.support.networking.vo.Status.ERROR
-import com.nochino.support.networking.vo.Status.LOADING
-import com.nochino.support.networking.vo.Status.SUCCESS
+import com.nochino.support.networking.vo.LoadingStatus.ERROR
+import com.nochino.support.networking.vo.LoadingStatus.LOADING
+import com.nochino.support.networking.vo.LoadingStatus.SUCCESS
 
 /**
  * A generic class that holds a value with its loading status.
@@ -31,7 +31,7 @@ import com.nochino.support.networking.vo.Status.SUCCESS
  *
  * @param <T>
 </T> */
-data class LoadingResource<out T>(val status: Status, val data: T?, val message: String?) {
+data class LoadingResource<out T>(val loadingStatus: LoadingStatus, val data: T?, val message: String?) {
     companion object {
         fun <T> success(data: T?): LoadingResource<T> {
             return LoadingResource(SUCCESS, data, null)
