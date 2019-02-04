@@ -8,5 +8,5 @@ import androidx.lifecycle.ViewModel
  * data object [D]
  */
 abstract class LoadingResourceViewModel<D>: ViewModel() {
-    abstract fun fetchLiveData(): LiveData<LoadingResource<D>>
+    abstract fun fetchLiveData(ignoreCache: Boolean = false): LiveData<LoadingResource<D>>
 }
