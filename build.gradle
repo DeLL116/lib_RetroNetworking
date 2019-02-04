@@ -28,6 +28,7 @@ dependencies {
 
     // --> Android Support / UI
     implementation "androidx.appcompat:appcompat:$libs.appcompatVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$libs.lifecycleExtensionsVersion"    // ViewModel / LiveData
 
     // --> Testing
     testImplementation "junit:junit:$libs.junitVersion"

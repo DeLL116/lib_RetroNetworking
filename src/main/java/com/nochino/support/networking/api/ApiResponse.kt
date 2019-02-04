@@ -16,6 +16,7 @@ package com.nochino.support.networking.api
  * limitations under the License.
  */
 
+import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
 import java.util.regex.Pattern
@@ -29,20 +30,24 @@ import java.util.regex.Pattern
  * @param <T> the type of the response object</T>
  *
  */
-@Suppress("unused") // T is used in extending classes
-sealed class ApiResponse<T> {
+@Suppress("unused", "UNUSED_PARAMETER") // T is used in extending classes
+sealed class ApiResponse<T>(call: Call<T>, response: Response<T>?) {
+
     companion object {
-        fun <T> create(error: Throwable): ApiErrorResponse<T> {
-            return ApiErrorResponse(error.message ?: "unknown error")
+
+        fun <T> create(call: Call<T>, error: Throwable): ApiErrorResponse<T> {
+            return ApiErrorResponse(call, null, error.message ?: "unknown error")
         }
 
-        fun <T> create(response: Response<T>): ApiResponse<T> {
+        fun <T> create(call: Call<T>, response: Response<T>): ApiResponse<T> {
             return if (response.isSuccessful) {
                 val body = response.body()
                 if (body == null || response.code() == 204) {
-                    ApiEmptyResponse()
+                    ApiEmptyResponse(call, response)
                 } else {
                     ApiSuccessResponse(
+                        call = call,
+                        response = response,
                         body = body,
                         linkHeader = response.headers()?.get("link")
                     )
@@ -54,7 +59,7 @@ sealed class ApiResponse<T> {
                 } else {
                     msg
                 }
-                ApiErrorResponse(errorMsg ?: "unknown error")
+                ApiErrorResponse(call, response, errorMsg ?: "unknown error")
             }
         }
     }
@@ -63,13 +68,21 @@ sealed class ApiResponse<T> {
 /**
  * separate class for HTTP 204 responses so that we can make ApiSuccessResponse's body non-null.
  */
-class ApiEmptyResponse<T> : ApiResponse<T>()
+class ApiEmptyResponse<T>(
+    call: Call<T>,
+    response: Response<T>
+) : ApiResponse<T>(call, response)
 
+@Suppress("unused")
 data class ApiSuccessResponse<T>(
+    val call: Call<T>,
+    val response: Response<T>,
     val body: T,
     val links: Map<String, String>
-) : ApiResponse<T>() {
-    constructor(body: T, linkHeader: String?) : this(
+) : ApiResponse<T>(call, response) {
+    constructor(call: Call<T>, response: Response<T>, body: T, linkHeader: String?) : this(
+        call = call,
+        response = response,
         body = body,
         links = linkHeader?.extractLinks() ?: emptyMap()
     )
@@ -111,4 +124,8 @@ data class ApiSuccessResponse<T>(
     }
 }
 
-data class ApiErrorResponse<T>(val errorMessage: String) : ApiResponse<T>()
+data class ApiErrorResponse<T>(
+    val call: Call<T>,
+    val response: Response<T>?,
+    val errorMessage: String
+) : ApiResponse<T>(call, response)

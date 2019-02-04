@@ -16,7 +16,7 @@
 
 package com.nochino.support.networking.util
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.nochino.support.networking.api.ApiResponse
 import retrofit2.CallAdapter
 import retrofit2.CallAdapter.Factory
@@ -26,18 +26,18 @@ import java.lang.reflect.Type
 
 /**
  * Retrofit Call Adapter Factory that allows wrapping of Retrofit calls
- * as LiveData objects.
+ * as MutableLiveData objects.
  *
  * Borrowed from Google Architecture sample project
- * [android-architecture-components](https://github.com/googlesamples/android-architecture-components/blob/88747993139224a4bb6dbe985adf652d557de621/GithubBrowserSample/app/src/main/java/com/android/example/github/util/LiveDataCallAdapterFactory.kt)
+ * [android-architecture-components](https://github.com/googlesamples/android-architecture-components/blob/88747993139224a4bb6dbe985adf652d557de621/GithubBrowserSample/app/src/main/java/com/android/example/github/util/MutableLiveDataCallAdapterFactoryFactory.kt)
  */
-open class LiveDataCallAdapterFactory : Factory() {
+open class MutableLiveDataCallAdapterFactory : Factory() {
     override fun get(
         returnType: Type,
         annotations: Array<Annotation>,
         retrofit: Retrofit
     ): CallAdapter<*, *>? {
-        if (Factory.getRawType(returnType) != LiveData::class.java) {
+        if (Factory.getRawType(returnType) != MutableLiveData::class.java) {
             return null
         }
         val observableType = Factory.getParameterUpperBound(0, returnType as ParameterizedType)
@@ -49,6 +49,6 @@ open class LiveDataCallAdapterFactory : Factory() {
             throw IllegalArgumentException("resource must be parameterized")
         }
         val bodyType = Factory.getParameterUpperBound(0, observableType)
-        return LiveDataCallAdapter<Any>(bodyType)
+        return MutableLiveDataCallAdapter<Any>(bodyType)
     }
 }
