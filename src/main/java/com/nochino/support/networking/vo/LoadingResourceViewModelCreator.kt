@@ -3,9 +3,7 @@ package com.nochino.support.networking.vo
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.ViewModelProvider.Factory
 import androidx.lifecycle.Observer
 
 /**
