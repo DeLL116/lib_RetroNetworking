@@ -38,8 +38,8 @@ dependencies {
     testImplementation "org.powermock:powermock-api-mockito:$libs.powermockApiMockitoVersion"
 
     // --> Implementation / Espresso Testing
-    androidTestImplementation "androidx.test:rules:$libs.rulesVersion"
-    androidTestImplementation "androidx.test:runner:$libs.runnerVersion"
+    androidTestImplementation "androidx.test:rules:$libs.testRulesVersion"
+    androidTestImplementation "androidx.test:runner:$libs.testRunnerVersion"
     androidTestImplementation "androidx.test.ext:junit:$libs.junitAndroidVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$libs.espressoCoreVersion"
 
